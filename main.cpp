@@ -5,13 +5,14 @@ using namespace cv;
 
 void bilateralfilter(int kernelsize,int sigma_distance, int sigma_gap);
 
-Mat src = imread("C:/Users/—»/Pictures/opencv/arimura.png", 1);
+Mat src = imread("arimura.png", 1);
 Mat dst = src.clone();
 
 int main(int argc, char *argv[]) {
 	imshow("origin", src);
-	bilateralfilter(11, 50, 100);
+	bilateralfilter(5,8,16);
 	imshow("result", dst);
+	imwrite("result.png", dst);
 	waitKey(0);
 
 	return 0;
@@ -32,11 +33,11 @@ void bilateralfilter(int kernelsize,int sigma_distance, int sigma_gap) {
 							continue;
 						} else {
 							numerator += src.data[(y - margin + j) * src.step + (x - margin + i)* src.elemSize() + c] 
-										* exp(-(x*x + y*y) / (2 * sigma_distance * sigma_distance))
+										* exp(-(i*i + j*j) / (2 * sigma_distance * sigma_distance))
 										* exp(-pow(src.data[y*src.step + x * src.elemSize() + c] - src.data[(y - margin+ j)
 									    * src.step + (x - margin + i) * src.elemSize() + c], 2) /( 2 * pow(sigma_gap, 2)));
 
-							denominator += exp(-(x*x + y * y) / (2 * sigma_distance * sigma_distance))
+							denominator += exp(-(i*i + j*j) / (2 * sigma_distance * sigma_distance))
 								* exp(-pow(src.data[y*src.step + x * src.elemSize() + c] - src.data[(y - margin + j)
 									* src.step + (x - margin + i) * src.elemSize() + c], 2) / (2 * pow(sigma_gap, 2)));
 						}
